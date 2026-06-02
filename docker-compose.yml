@@ -1,0 +1,55 @@
+name: password-strength-app
+
+services:
+
+  # ---- Веб-интерфейс ----
+  # Streamlit-приложение, открывается в браузере на http://localhost:8501
+  web:
+    build: ./services/web
+    ports:
+      - "8501:8501"
+    depends_on:
+      - api
+    environment:
+      - API_URL=http://api:8000
+    networks:
+      - app-net
+
+  # ---- Основной API ----
+  # FastAPI: единая точка входа для веб-интерфейса.
+  # Выполняет zxcvbn-оценку, проверку по локальной базе утечек,
+  # проксирует запросы к ml-сервису за Марковскими оценкой и генерацией.
+  # Также генерирует пароли в режимах crypto (CSPRNG) и passphrase (EFF Diceware).
+  api:
+    build: ./services/api
+    ports:
+      - "8000:8000"
+    depends_on:
+      - ml
+    environment:
+      - ML_URL=http://ml:8000
+      - BREACH_DB_PATH=/data/top100k.txt
+      - WORDLIST_PATH=/data/eff_wordlist.txt
+    volumes:
+      - ./data:/data:ro
+    networks:
+      - app-net
+
+  # ---- ML-сервис ----
+  # FastAPI вокруг обученной модели на цепях Маркова.
+  # Не выставлен наружу — доступен только из внутренней Docker-сети.
+  ml:
+    build: ./services/ml
+    expose:
+      - "8000"
+    environment:
+      - MODEL_PATH=/data/models/markov.pkl
+    volumes:
+      - ./data:/data:ro
+      - ./data/models:/data/models:rw
+    networks:
+      - app-net
+
+networks:
+  app-net:
+    driver: bridge
