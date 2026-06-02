@@ -30,7 +30,7 @@ DEFAULT_MODEL_PATH = "/data/markov.pkl"
 DEFAULT_ORDER = 3
 DEFAULT_MIN_LEN = 6
 DEFAULT_MAX_LEN = 20
-DEFAULT_LIMIT = 1_000_000  # максимум паролей для обучения
+DEFAULT_LIMIT = 10_000_000  # максимум паролей для обучения
 
 
 def load_corpus(
