@@ -167,7 +167,7 @@ def _passphrase_controls() -> dict | None:
         )
     with col2:
         separator = st.selectbox(
-            "Разделитель", options=["-", "_", ".", " ", ""], index=0, key="p_sep"
+            "Разделитель", options=["-", "_", "."], index=0, key="p_sep"
         )
     with col3:
         add_number = st.checkbox("Добавить цифру", value=True, key="p_num")
