@@ -182,10 +182,8 @@ def render() -> None:
         "и не записываются в журналы или хранилище."
     )
 
-    # Поле ввода с маскировкой и переключателем "показать".
-    col_input, col_button = st.columns([3, 1])
+    col_input, col_button = st.columns([3, 1], vertical_alignment="bottom")
     with col_input:
-        # Оставляем только само поле ввода, жестко задав type="password"
         password = st.text_input(
             "Пароль для проверки",
             type="password",
@@ -194,9 +192,6 @@ def render() -> None:
             key="password_input",
         )
     with col_button:
-        # Кнопка выровнена по нижнему краю поля ввода через отступ.
-        st.write("")
-        st.write("")
         check_clicked = st.button("Проверить", type="primary", use_container_width=True)
 
     # Выполняем проверку, если кнопка нажата и поле не пустое.
