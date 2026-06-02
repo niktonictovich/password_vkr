@@ -182,6 +182,7 @@ def render() -> None:
         "и не записываются в журналы или хранилище."
     )
 
+
     col_input, col_button = st.columns([3, 1], vertical_alignment="bottom")
     with col_input:
         password = st.text_input(
